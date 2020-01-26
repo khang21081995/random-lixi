@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+  .rainbow-text {
+    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+  function callAjax(jsonStringSend, urlReciver, methodSend, callBackFunction) {
+    var data = (jsonStringSend);
+    $.ajax({
+      url: urlReciver,
+      method: methodSend,
+      contentType: "application/json",
+      data: data
+    }).done(function (response) {
+      callBackFunction(response);
+    });
+
+  }
+
+</script>
+<h1 class="container">
+  <h1 class="rainbow-text">Chúc các bạn năm mới vui vẻ và hạnh phúc</h1>
+  <form>
+    <div class="form-group">
+      <h2 class="">Bạn là ai, xin làm ơn cho mình biết tên</h2>
+      <input type="text" class="form-control" id="name" aria-describedby="emailHelp"
+        placeholder="type your name here to get lucky money">
+    </div>
+    <div class="btn btn-danger" id="btnSubmit">Đòi lì xì nào!</div>
+    <h1 id="response" style="color: red;"></h1>
+  </form>
+</div>
+
+<script>
+  $("#btnSubmit").click(function () {
+    var name = $("#name").val();
+    if (!name) {
+      alert("Không cho biết tên thì đừng hòng nhận lì xì nhé. =_=");
+    } else {
+      callAjax(JSON.stringify({
+        name
+      }), "/record", "POST", function (res) {
+        // console.log({
+        //   res
+        // })
+        $("#response").html(`Chúc mừng ${name} đã bốc trúng lì xì siêu to khổng lồ giá trị: <b>${res.money.toLocaleString()} vnđ</b>.`)
+      })
+    }
+  })
+
+</script>
